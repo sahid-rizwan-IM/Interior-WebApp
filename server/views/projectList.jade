@@ -1,0 +1,38 @@
+extends layout
+block head
+    link(rel="stylesheet" href="/css/projectList.css")
+
+block content
+    section
+        .headerBox
+            .row
+                h4 Available Projects
+                    a.addNewProject(href="/api/addNewProject") Add New
+                    //- .table-main.custom-pagination(style="margin-top: 3rem;")
+                    //-     table.table.table-striped.table-bordered.dataTable(id="memoryprojectTable",cellpadding='0', cellspacing='0', border='0', width='100%' style="border-right-width: 1px !important;")
+        .project-list 
+            -console.log("listtttt", projectList)
+            each project in projectList
+                -console.log("listtttt", list)
+                .project-card 
+                    h5.project-title= project.projectNo + '. ' +project.projectName
+                    h3.project-desc= "Client Name: " + project.clientName
+                    if project.startDate && project.startDate !== undefined
+                        h3.project-desc= "Start Date: " + project.startDateFormatted
+                    if project.endDate && project.description && project.endDate !== undefined && project.description !== undefined
+                        h3.project-desc= "End Date: " + project.endDateFormatted
+                        h3.project-desc(style="margin-bottom:1rem !important;")= project.description
+                    else if project.endDate && project.endDate !== undefined
+                        h3.project-desc(style="margin-bottom:1rem !important;")= "End Date: " + project.endDateFormatted
+                    else
+                        h3.project-desc(style="margin-bottom:1rem !important;")= project.description
+
+                    .project-actions 
+                        h4.totalAmount= "Amount: " + project.totalAmount
+                        a.btn.btn-edit(href=`/api/addNewProject?id=${project._id}`) Edit 
+                        a.btn.btn-view(href=`/api/viewProject/${project._id}`) View
+
+
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js")
+    script(src='/js/adminLogin.js')
+    script(src='/js/bootstrap/bootstrap-notify.min.js' async)

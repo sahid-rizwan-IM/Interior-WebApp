@@ -1,0 +1,52 @@
+extends layout
+block head
+    link(rel="stylesheet" href="/css/addNewProject.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css")
+
+block content
+    .form-container
+        h2 New Project Form
+        form#projectForm
+            .form-group
+                label(for="clientName") Client Name 
+                    span(style="color:red") *
+                input#clientName(type="text" name="clientName" placeholder="Enter client name" style="width: 91%")
+
+            .form-row
+                .form-group 
+                    label(for="projectNo") Project No 
+                        span(style="color:red") *
+                    input#projectNo(type="number" name="projectNo" placeholder="Enter project no.")
+                .form-group
+                    label(for="projectName") Project Name 
+                        span(style="color:red") *
+                    input#projectName(type="text" name="projectName" placeholder="Enter project name")
+
+            .form-group
+                label(for="description") Description
+                textarea#description(name="description" rows="3" placeholder="Enter description" style="width: 91%")
+            
+            .form-row
+                .form-group.date
+                    label(for="startDate") Start Date 
+                        span(style="color:red") *
+                    input#startDate(type="text" name="startDate")
+                .form-group.date
+                    label(for="endDate") End Date 
+                        //- span(style="color:red") *
+                    input#endDate(type="text" name="endDate")
+
+            .form-group
+                label(for="totalAmount") Total Amount 
+                    span(style="color:red") *
+                input#totalAmount(type="number" name="totalAmount" placeholder="Enter total amount" style="width: 91%")
+
+            button#submitBtn(type="submit") Submit
+
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js")
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js')
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js")
+    script(src='/js/addNewProject.js')
+    script(src='/js/bootstrap/bootstrap-notify.min.js' async)
+

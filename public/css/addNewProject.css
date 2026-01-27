@@ -1,0 +1,261 @@
+.form-container {
+    max-width: 600px;
+    margin: 1rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 82%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    /* font-family: 'Sora'; */
+}
+
+.form-container {
+    box-shadow: 1px 1px 10px;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+button#submitBtn {
+    width: 15%;
+    padding: 0.75rem;
+    background: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background transform 0.3s ease;
+    margin-left: 80% !important;
+    margin-top: 1rem !important;
+}
+
+button#submitBtn:hover {
+    background: #356ca0;
+    transform: scale(1.1);
+}
+
+.form-group.date { 
+    position: relative; /* critical for datetimepicker */ 
+}
+
+/* Glyphicons font setup */
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/fonts/glyphicons-halflings-regular.woff2') format('woff2'),
+       url('https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/fonts/glyphicons-halflings-regular.woff') format('woff');
+}
+
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+.glyphicon-chevron-left:before {
+  content: "\e079";
+}
+
+.glyphicon-chevron-right:before {
+  content: "\e080";
+}
+
+/* Ensure form container allows overflow */
+.form-container {
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+}
+
+/* Date field wrapper */
+.form-group.date {
+  position: relative;
+  overflow: visible;
+  z-index: 1000;
+}
+
+/* Datepicker popup widget */
+.bootstrap-datetimepicker-widget {
+  position: absolute !important;
+  top: 100%;
+  left: 0;
+  width: 320px;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  padding: 1rem; 
+  font-size: 0.9rem;
+  z-index: 2000;
+
+  /* remove unwanted spacing/dots */
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+/* Header (month/year switch) */
+.bootstrap-datetimepicker-widget .picker-switch {
+  text-align: center;
+  font-weight: 600;
+  color: #2c3e50;
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* Calendar table styling */
+.bootstrap-datetimepicker-widget table td {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.bootstrap-datetimepicker-widget table td:hover {
+  background: #f0f4f8;
+}
+
+/* Selected date */
+.bootstrap-datetimepicker-widget table td.active,
+.bootstrap-datetimepicker-widget table td.active:hover {
+  background-color: #2c3e50;
+  color: #fff;
+}
+
+/* Today highlight – remove stray dot */
+.bootstrap-datetimepicker-widget table td.today:before {
+  content: none !important; /* kills the dot */
+}
+
+/* Time picker section */
+.bootstrap-datetimepicker-widget .timepicker-hour,
+.bootstrap-datetimepicker-widget .timepicker-minute,
+.bootstrap-datetimepicker-widget .timepicker-second {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Buttons inside widget */
+.bootstrap-datetimepicker-widget .btn {
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+}
+
+.bootstrap-datetimepicker-widget .btn-primary {
+  background-color: #2c3e50;
+  border-color: #2c3e50;
+}
+
+.bootstrap-datetimepicker-widget .btn-primary:hover {
+  background-color: #1a252f;
+}
+
+.bootstrap-datetimepicker-widget {
+  display: block !important;
+  list-style-type: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.bootstrap-datetimepicker-widget::before,
+.bootstrap-datetimepicker-widget::marker,
+.bootstrap-datetimepicker-widget li::before,
+.bootstrap-datetimepicker-widget li::marker {
+  content: none !important;
+  display: none !important;
+}
+
+.bootstrap-datetimepicker-widget li {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.bootstrap-datetimepicker-widget table td.today:before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Kill left padding from list container */
+.bootstrap-datetimepicker-widget.list-unstyled,
+.bootstrap-datetimepicker-widget ul,
+.bootstrap-datetimepicker-widget li {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* Force widget to align flush */
+.bootstrap-datetimepicker-widget {
+  display: block !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure table is aligned properly */
+.bootstrap-datetimepicker-widget table {
+  margin: 0 !important;
+  padding: 0 !important;
+  border-collapse: collapse;
+}
+
+/* Calendar table */
+.bootstrap-datetimepicker-widget table {
+  width: 100%;
+  border-collapse: separate;  /* ✅ allows spacing */
+  border-spacing: 6px;        /* ✅ space between rows & columns */
+  margin: 0;
+}
+
+/* Table cells */
+.bootstrap-datetimepicker-widget table td,
+.bootstrap-datetimepicker-widget table th {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  padding: 2px;               /* ✅ inner padding for each cell */
+}

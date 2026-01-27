@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    .login-container
+        h2 Login
+        form#loginForm
+            .form-group
+                label(for="username") Username
+                input#username(type="text" name="username" placeholder="Enter your username", required)
+            .form-group
+                label(for="password") Password
+                input#password(type="password" name="password" placeholder="Enter your password", required)
+            button#submitBtn.login-btn(type="submit") Login
+            a.forgot-link(href="/forgot") Forgot Password?
+
+
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js")
+    script(src='/js/adminLogin.js')
+    script(src='/js/bootstrap/bootstrap-notify.min.js' async)

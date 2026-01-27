@@ -1,0 +1,192 @@
+.headerBox {
+  background: #ffffff;
+  padding: 1rem 2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin: 3rem 5rem;
+}
+
+.headerBox .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerBox h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.headerBox a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #2c3e50;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: background transform 0.3s ease;
+}
+
+.headerBox a:hover {
+  background: #5e809f;
+  transform: scale(1.1);
+}
+
+.addNewProject {
+  position: absolute;
+  right: 6%;
+  margin-top: -5px;
+}
+
+/* .project-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7rem;
+  margin: 2rem 7rem;
+}
+
+.project-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  width: 280px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.project-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #00367c;
+}
+
+.project-desc {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.project-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
+}
+
+.btn-edit {
+  background: #ffc107;
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background: #e0a800;
+}
+
+.btn-view {
+  background: #28a745;
+  color: #fff;
+}
+
+.btn-view:hover {
+  background: #218838;
+} */
+
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 5rem;
+  margin: 2rem 7rem;
+}
+
+.project-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+}
+
+.project-title {
+  background: linear-gradient(135deg, #00367c, #005fa3);
+  color: #fff;
+  padding: 14px 18px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem !important;
+  text-transform: uppercase;
+}
+
+.project-desc {
+  padding: 14px 0 0 18px;
+  font-size: 0.95rem;
+  color: #333;
+  flex-grow: 1;
+  line-height: 1.5;
+  margin: 0 !important;
+}
+
+.project-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 14px 18px;
+  border-top: 1px solid #eee;
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-edit {
+  background: #ff9800;
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background: #e68900;
+  transform: scale(1.05);
+}
+
+.btn-view {
+  background: #4caf50;
+  color: #fff;
+}
+
+.btn-view:hover {
+  background: #3d8b40;
+  transform: scale(1.05);
+}
+
+.totalAmount {
+  margin:auto !important;
+}
