@@ -26,7 +26,7 @@ $("#loginForm").submit(function (e) {
                 $("#loginForm")[0].reset();
                 setTimeout(() => {
                     window.location.href = `/api/allMainProjects`;
-                }, 2000);
+                }, 1000);
             }
         },
         error: function (err) {

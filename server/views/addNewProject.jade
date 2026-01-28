@@ -4,27 +4,28 @@ block head
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css")
 
 block content
+    input#currentProject(type="hidden" name="currentProject" value= currentProject ? JSON.stringify(currentProject) : "{}")
     .form-container
-        h2 New Project Form
+        h2 #{currentProject && currentProject._id ? "Edit Project" : "New Project Form"}
         form#projectForm
             .form-group
                 label(for="clientName") Client Name 
                     span(style="color:red") *
-                input#clientName(type="text" name="clientName" placeholder="Enter client name" style="width: 91%")
+                input#clientName(type="text" name="clientName" placeholder="Enter client name" style="width: 91%" value= currentProject && currentProject._id ? currentProject.clientName : "")
 
             .form-row
-                .form-group 
+                .form-group
                     label(for="projectNo") Project No 
                         span(style="color:red") *
-                    input#projectNo(type="number" name="projectNo" placeholder="Enter project no.")
+                    input#projectNo(type="number" name="projectNo" placeholder="Enter project no." value= currentProject && currentProject._id ? currentProject.projectNo : "")
                 .form-group
                     label(for="projectName") Project Name 
                         span(style="color:red") *
-                    input#projectName(type="text" name="projectName" placeholder="Enter project name")
+                    input#projectName(type="text" name="projectName" placeholder="Enter project name" value= currentProject && currentProject._id ? currentProject.projectName : "")
 
             .form-group
                 label(for="description") Description
-                textarea#description(name="description" rows="3" placeholder="Enter description" style="width: 91%")
+                textarea#description(name="description" rows="3" placeholder="Enter description" style="width: 91%")= currentProject && currentProject._id ? currentProject.description : ""
             
             .form-row
                 .form-group.date
@@ -39,9 +40,10 @@ block content
             .form-group
                 label(for="totalAmount") Total Amount 
                     span(style="color:red") *
-                input#totalAmount(type="number" name="totalAmount" placeholder="Enter total amount" style="width: 91%")
-
-            button#submitBtn(type="submit") Submit
+                input#totalAmount(type="number" name="totalAmount" placeholder="Enter total amount" style="width: 91%" value= currentProject && currentProject._id ? currentProject.totalAmount : "")
+            .butons
+                button#cancelBtn(type="button") Dismiss
+                button#submitBtn(type="submit") #{currentProject && currentProject._id ? "Update" : "Create"}
 
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js")
     script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js")

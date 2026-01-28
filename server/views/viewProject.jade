@@ -1,41 +1,21 @@
 extends layout
 block head
     link(rel="stylesheet" href="/css/projectList.css")
+    link(rel="stylesheet" href="/css/viewProject.css")
 
 block content
+    input#viewedProject(type="hidden" name="viewedProject" value=JSON.stringify(currentProjectDetails))
     section
         .headerBox
             .row
-                h4 Available Projects
+                -console.log("got all", currentProjectDetails)
+                h4 #{currentProjectDetails ? currentProjectDetails.projectName : ''} - Material Lists
+                    span.h3Details (Client Name: #{currentProjectDetails ? currentProjectDetails.clientName : ''} - Quoted Amount: #{currentProjectDetails ? currentProjectDetails.totalAmount : ''})
                     a.logout(onclick="openLogoutModal()") Logout
-                    a.addNewProject(href="/api/addNewProject") Add New
+                    a.addNewProject(href="/api/addNewProject") Add Items
                     //- .table-main.custom-pagination(style="margin-top: 3rem;")
                     //-     table.table.table-striped.table-bordered.dataTable(id="memoryprojectTable" cellpadding='0' cellspacing='0' border='0' width='100%' style="border-right-width: 1px !important;")
         .project-list 
-            -console.log("listtttt", projectList)
-            each project in projectList
-                -console.log("listtttt", list)
-                .project-card 
-                    h5.project-title= project.projectNo + '. ' +project.projectName
-                    h3.project-desc= "Client Name: " + project.clientName
-                    if project.startDate && project.startDate !== undefined
-                        h3.project-desc= "Start Date: " + project.startDateFormatted
-                    if project.endDate && project.description && project.endDate !== undefined && project.description !== undefined
-                        h3.project-desc= "End Date: " + project.endDateFormatted
-                        h3.project-desc(style="margin-bottom:1rem !important;")= project.description
-                    else if project.endDate && project.endDate !== undefined
-                        h3.project-desc(style="margin-bottom:1rem !important;")= "End Date: " + project.endDateFormatted
-                    else
-                        h3.project-desc(style="margin-bottom:1rem !important;")= project.description
-
-                    .project-actions 
-                        h4.totalAmount= "Amount: " + project.totalAmount
-                        a.btn.btn-edit(href=`/api/addNewProject?id=${project._id}` title="Edit")
-                            i.fa-solid.fa-pen-to-square
-                        a.btn.btn-view(href=`/api/viewProject?id=${project._id}&projectName=${project.projectName}&clientName=${project.clientName}&amount=${project.totalAmount}` title="View")
-                            i.fa-solid.fa-eye
-                        a.btn.btn-delete(data-id=project._id.toString() data-projectname=project.projectName title="Delete")
-                            i.fa-solid.fa-trash
         //- Custom modal
         div#logoutModal.modal-overlay(style="display:none !important")
 

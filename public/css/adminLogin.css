@@ -1,8 +1,21 @@
-/* General body styling */
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #f5f5f5;
-    margin: 0;
+body { 
+    font-family: 'Poppins', 
+    sans-serif; background: #f5f5f5; 
+    margin: 0; 
+    position: relative; /* important for pseudo-element */ 
+    z-index: 0; 
+} /* pseudo-element for blurred background */ 
+    
+body::before { 
+    content: ""; 
+    position: fixed; /* covers entire viewport */ 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: url("../images/MR_Logo.jpg");
+    filter: blur(7px); /* adjust blur strength */ 
+    z-index: -1; /* keep it behind content */ 
 }
 
 /* Header styling */
@@ -13,7 +26,8 @@ body {
     background: #ffffff;
     padding: 1rem 2rem;
     border-bottom: 1px solid #ddd;
-    box-shadow: 0px -1px 10px #2c3e50;
+    /* box-shadow: 0px -1px 10px #2c3e50, 0px -1px 10px #2c3e50, 0px -1px 10px #2c3e50, 0px -1px 10px #2c3e50; */
+    box-shadow: 0 0 8px #000, 0 0 16px #000, 0 0 24px #000, 0 0 32px #000;
 }
 
 .site-header .logo img {
@@ -45,7 +59,7 @@ body {
     background: #fff;
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
     width: 350px;
     text-align: center;
     margin: 3rem auto;
@@ -106,7 +120,13 @@ body {
 }
 
 .login-container {
-    box-shadow: 2px 0px 13px;
+    box-shadow: 0 0 8px #000, 0 0 16px #fff, 0 0 24px #000, 0 0 32px #fff;
+}
+
+input:focus {
+    border: 1px solid #0077b6 !important;
+    box-shadow: 0 0 6px rgba(0, 119, 182, 0.6);
+    outline: none;
 }
 
 /* 🔔 Notify container base */

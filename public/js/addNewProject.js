@@ -1,9 +1,13 @@
+const currentProject = JSON.parse($('#currentProject').val());
 $(document).ready(function () {
     const today = moment().startOf('day');
     $('#startDate').val(today.format('MM-DD-YYYY'));
     $('#endDate').val(today.format('MM-DD-YYYY'));
     $('#startDate').datetimepicker({ format: 'MMM-DD-YYYY' });
     $('#endDate').datetimepicker({ format: 'MMM-DD-YYYY' });
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+      window.location.href = '/api/allMainProjects';
+    });
     $("#projectForm").submit(function (e) {
         e.preventDefault();
 
@@ -24,7 +28,7 @@ $(document).ready(function () {
         }
 
         // If validation passes
-        const postObj = {
+        let postObj = {
             clientName,
             projectNo,
             projectName,
@@ -33,23 +37,26 @@ $(document).ready(function () {
             startDate,
             endDate
         };
+        if (currentProject && currentProject?._id) {
+            postObj.projectId = currentProject._id
+        }
 
         console.log("Submitting:", postObj);
 
         $.ajax({
-            url: "/api/createProjectList",
+            url: "/api/createOrEditProjectList",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(postObj),
             success: function (res) {
-                if(res.success === false){
-                    $.notify(res.message || "Project created successfully!", { type: "danger" });
+                if (res.success === false) {
+                    $.notify(res.message || "Creation or updation failed!", { type: "danger" });
                 } else {
                     $.notify(res.message || "Project created successfully!", { type: "success" });
                     $("#projectForm")[0].reset();
                     setTimeout(() => {
                         window.location.href = `/api/allMainProjects`;
-                    }, 2000);
+                    }, 1000);
                 }
             },
             error: function (err) {
@@ -57,4 +64,9 @@ $(document).ready(function () {
             }
         });
     });
+
+    if (currentProject && currentProject?._id) {
+        $('#startDate').val(moment(currentProject.startDate).format('MMM-DD-YYYY'));
+        $('#endDate').val(moment(currentProject.endDate).format('MMM-DD-YYYY'));
+    }
 });
