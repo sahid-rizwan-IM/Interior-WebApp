@@ -5,3 +5,25 @@
     color: rgb(237, 136, 168);
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
+.form-container{
+    width: 384px !important;
+    padding-right: 0rem !important;
+}
+
+.form-container h2{
+    margin-right: 25px !important;
+}
+
+#addMaterialForm button#submitBtn, #addMaterialForm button#confirmDeleteBtn {
+    width: 23% !important;
+
+}
+
+#addMaterialForm .butons{
+    margin-right: 10% !important;
+}
+
+/* Data Table */
+table.table-bordered.dataTable {
+  border-right-width: 1px !important;
+}

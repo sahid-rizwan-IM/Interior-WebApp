@@ -4,6 +4,7 @@ const app = express();
 const connectDB = require('./config/db');
 const User = require('./server/models/users');
 const projectlist = require('./server/models/projectlist');
+const materialslist = require('./server/models/materialsList');
 
 const PORT = 3000;
 const session = require('express-session');
@@ -34,6 +35,11 @@ app.use((req, res, next) => {
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); 
   res.setHeader('Pragma', 'no-cache'); 
   res.setHeader('Expires', '0'); next(); 
+});
+app.use((req, res, next) => { 
+  if (req.session && req.session.user) { 
+    req.user = req.session.user;
+  } next(); 
 });
 
 app.get('/', (req, res) => {

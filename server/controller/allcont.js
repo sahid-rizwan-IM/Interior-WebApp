@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
-    projectlist = mongoose.model('projectlist')
+    projectlist = mongoose.model('projectlist'),
+    materialslist = mongoose.model('materialslist')
 const fs = require("fs");
 const path = require("path");
 const moment = require("moment");
@@ -24,7 +25,11 @@ const mrController = {
             if (user.password !== userPassword) {
                 return res.json({ success: false, message: "Password entered is incorrect!" })
             }
-            req.session.user = user; // store user in session
+            req.session.user = { 
+                _id: user._id, 
+                clientName: user.clientName, 
+                email: user.email 
+            };
             return res.json({ success: true, message: "Login successful!" })
         } catch (err) {
             console.warn("ERROR in userLoginCheck:", err.message)
@@ -157,13 +162,62 @@ const mrController = {
                 clientName: req.query.clientName,
                 totalAmount: req.query.amount,
             }
-            return res.render("viewProject", { currentProjectDetails })
+            const materialList = await materialslist.find({ isActive: true }).lean();
+            return res.render("viewProject", { currentProjectDetails, materialList })
 
         } catch (err) {
             console.warn("ERROR in deleteProject:", err)
             return res.render("viewProject")
         }
-    }
+    },
+
+    addMaterials: async function (req, res) {
+        try {
+            const {
+                materialName,
+                totalQuantity,
+                usedCount,
+                balanceCount,
+                projectId,
+                materialsListId
+            } = req.body;
+            if (materialsListId) {
+                const updateDoc = {
+                    materialName,
+                    totalQuantity,
+                    usedCount,
+                    balanceCount,
+                    lastModifiedAt: new Date()
+                }
+                const response = await materialslist.findByIdAndUpdate(materialsListId, updateDoc, { new: true })
+                if (!response) {
+                    return res.json({ success: false, message: `Updating ${materialName} failed!` })
+                }
+                return res.json({ success: true, message: `${materialName} Updated successfully!` })
+            } else {
+                const newDoc = {
+                    isActive: true,
+                    projectId,
+                    materialName,
+                    totalQuantity,
+                    usedCount,
+                    balanceCount,
+                    createdBy: req?.user?._id || null,
+                    createdAt: new Date(),
+                    lastModifiedAt: new Date()
+                }
+
+                const response = await materialslist.create(newDoc);
+                if (!response) {
+                    return res.json({ success: false, message: `Adding ${materialName} failed!` })
+                }
+                return res.json({ success: true, message: `${materialName} added successfully!` })
+            }
+        } catch (err) {
+            console.warn("ERROR in createOrEditProject:", err.message)
+            return res.json({ success: false, message: `Adding ${materialName} failed: err.message` })
+        }
+    },
 };
 
 module.exports = mrController;
