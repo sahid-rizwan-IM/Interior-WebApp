@@ -14,5 +14,8 @@ module.exports = function (app) {
 
     app.get('/api/viewProject', mrController.ensureAuthenticated, mrController.viewProject);
     app.post('/api/addMaterial', mrController.ensureAuthenticated, mrController.addMaterials);
+    app.get('/api/addMaterial', mrController.ensureAuthenticated, mrController.addMaterials);
+
+    app.get('/api/officeStore', mrController.ensureAuthenticated, mrController.renderOfficeStore);
 
 };

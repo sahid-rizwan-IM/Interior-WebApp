@@ -177,7 +177,7 @@ input:focus {
 
 /* 🎯 BOUNCE IN */
 .animated.bounceInDown {
-    animation: notifyBounceIn 0.8s ease-out;
+    animation: notifyBounceIn 0.5s ease-out;
 }
 
 /* 🎯 BOUNCE OUT */

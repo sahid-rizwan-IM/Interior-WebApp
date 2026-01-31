@@ -5,7 +5,7 @@ const materialSchema = new mongoose.Schema({
     projectId: { type: mongoose.Schema.ObjectId, ref: 'projectlist' },
     materialName: { type: String },
     totalQuantity: { type: Number },
-    usedCount: { type: Number },
+    usedCount: { type: Number, default: 0 },
     balanceCount: { type: Number },
     createdBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: Date.now },

@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const User = require('./server/models/users');
 const projectlist = require('./server/models/projectlist');
 const materialslist = require('./server/models/materialsList');
+const officeStore = require('./server/models/officeDetails');
 
 const PORT = 3000;
 const session = require('express-session');

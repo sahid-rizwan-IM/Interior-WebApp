@@ -1,7 +1,8 @@
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     projectlist = mongoose.model('projectlist'),
-    materialslist = mongoose.model('materialslist')
+    materialslist = mongoose.model('materialslist'),
+    officeDetails = mongoose.model('officeDetails')
 const fs = require("fs");
 const path = require("path");
 const moment = require("moment");
@@ -25,10 +26,10 @@ const mrController = {
             if (user.password !== userPassword) {
                 return res.json({ success: false, message: "Password entered is incorrect!" })
             }
-            req.session.user = { 
-                _id: user._id, 
-                clientName: user.clientName, 
-                email: user.email 
+            req.session.user = {
+                _id: user._id,
+                clientName: user.clientName,
+                email: user.email
             };
             return res.json({ success: true, message: "Login successful!" })
         } catch (err) {
@@ -71,6 +72,7 @@ const mrController = {
             return res.render("addNewProject")
         }
     },
+
     createOrEditProject: async function (req, res) {
         try {
             const {
@@ -136,13 +138,12 @@ const mrController = {
     deleteProject: async function (req, res) {
         try {
             const { projectId } = req.body;
-            console.log("projectId for delete--==", projectId)
 
             if (!mongoose.Types.ObjectId.isValid(projectId)) {
                 return res.json({ success: false, message: "Invalid Project Id format." });
             }
 
-            const deleteProject = await projectlist.findByIdAndDelete(projectId);
+            const deleteProject = await projectlist.findByIdAndUpdate(projectId, { isActive: false });
             if (!deleteProject) {
                 return res.json({ success: false, message: "Project not found in DB." });
             }
@@ -154,7 +155,18 @@ const mrController = {
         }
     },
 
-    viewProject: async function(req,res) {
+    renderOfficeStore: async function (req, res) {
+        try {
+            const officeMaterials = await officeDetails.find({ isActive: true }).lean();
+            return res.render("officeStore", { renderType: "officeStore", officeStore: officeMaterials })
+
+        } catch (err) {
+            console.warn("ERROR in renderOfficeStore:", err)
+            return res.render("officeStore")
+        }
+    },
+
+    viewProject: async function (req, res) {
         try {
             const currentProjectDetails = {
                 projectId: req.query.id,
@@ -162,8 +174,8 @@ const mrController = {
                 clientName: req.query.clientName,
                 totalAmount: req.query.amount,
             }
-            const materialList = await materialslist.find({ isActive: true }).lean();
-            return res.render("viewProject", { currentProjectDetails, materialList })
+            const materialList = await materialslist.find({ isActive: true, projectId: new mongoose.Types.ObjectId(req.query.id) }).lean();
+            return res.render("viewProject", { currentProjectDetails, materialList, renderType: "viewProject" })
 
         } catch (err) {
             console.warn("ERROR in deleteProject:", err)
@@ -173,51 +185,133 @@ const mrController = {
 
     addMaterials: async function (req, res) {
         try {
-            const {
-                materialName,
-                totalQuantity,
-                usedCount,
-                balanceCount,
-                projectId,
-                materialsListId
-            } = req.body;
-            if (materialsListId) {
-                const updateDoc = {
+            console.log("object got===", req.body);
+
+            if (req.body.collectionType === "officeStore") {
+                const {
                     materialName,
-                    totalQuantity,
-                    usedCount,
-                    balanceCount,
-                    lastModifiedAt: new Date()
-                }
-                const response = await materialslist.findByIdAndUpdate(materialsListId, updateDoc, { new: true })
-                if (!response) {
-                    return res.json({ success: false, message: `Updating ${materialName} failed!` })
-                }
-                return res.json({ success: true, message: `${materialName} Updated successfully!` })
-            } else {
-                const newDoc = {
-                    isActive: true,
-                    projectId,
-                    materialName,
-                    totalQuantity,
-                    usedCount,
-                    balanceCount,
-                    createdBy: req?.user?._id || null,
-                    createdAt: new Date(),
-                    lastModifiedAt: new Date()
+                    balanceQuantity,
+                    perRate,
+                    totalCost,
+                    materialId
+                } = req.body;
+
+                if (materialId) {
+                    const updateDoc = {
+                        materialName,
+                        balanceQuantity,
+                        perRate,
+                        totalCost,
+                        lastModifiedAt: new Date()
+                    }
+                    const response = await officeDetails.findByIdAndUpdate(materialId, updateDoc, { new: true })
+                    if (!response) {
+                        return res.json({ success: false, message: `Updating ${materialName} failed!` })
+                    }
+                    return res.json({ success: true, message: `${materialName} Updated successfully!` })
+                } else {
+                    const newDoc = {
+                        isActive: true,
+                        materialName,
+                        balanceQuantity,
+                        perRate,
+                        totalCost,
+                        createdBy: req?.user?._id || null,
+                        createdAt: new Date(),
+                        lastModifiedAt: new Date()
+                    }
+                    const materialAvail = await officeDetails.findOne({ materialName }).lean();
+                    if (materialAvail) {
+                        return res.json({ success: false, message: `${materialName} already present, please update there!` })
+                    }
+                    const response = await officeDetails.create(newDoc);
+                    if (!response) {
+                        return res.json({ success: false, message: `Adding ${materialName} failed!` })
+                    }
+                    return res.json({ success: true, message: `${materialName} added successfully!` })
                 }
 
-                const response = await materialslist.create(newDoc);
-                if (!response) {
-                    return res.json({ success: false, message: `Adding ${materialName} failed!` })
+            } else {
+                const {
+                    materialName,
+                    totalQuantity,
+                    usedCount,
+                    balanceCount,
+                    projectId,
+                    materialId,
+                    usedCountEntered,
+                    operator
+                } = req.body;
+
+                if (materialId) {
+                    const updateDoc = {
+                        materialName,
+                        totalQuantity,
+                        usedCount,
+                        balanceCount,
+                        lastModifiedAt: new Date()
+                    }
+                    const response = await materialslist.findByIdAndUpdate(materialId, updateDoc, { new: true });
+                    if (!response) {
+                        return res.json({ success: false, message: `Updating ${materialName} failed!` })
+                    }
+                    const updateOfficeStore = await mrController.updateOfficeStore(materialName, usedCountEntered, operator);
+                    if (!updateOfficeStore || updateOfficeStore.success === false) {
+                        return res.json({ success: false, message: updateOfficeStore.message })
+                    }
+                    return res.json({ success: true, message: `${materialName} Updated successfully!` })
+                } else {
+                    const newDoc = {
+                        isActive: true,
+                        projectId,
+                        materialName,
+                        totalQuantity,
+                        usedCount,
+                        balanceCount,
+                        createdBy: req?.user?._id || null,
+                        createdAt: new Date(),
+                        lastModifiedAt: new Date()
+                    }
+                    const materialAvail = await materialslist.findOne({ projectId, materialName }).lean();
+                    if (materialAvail) {
+                        return res.json({ success: false, message: `${materialName} already present, please update there!` })
+                    }
+                    const response = await materialslist.create(newDoc);
+                    if (!response) {
+                        return res.json({ success: false, message: `Adding ${materialName} failed!` })
+                    }
+                    const updateOfficeStore = await mrController.updateOfficeStore(materialName, usedCountEntered, operator);
+                    if (!updateOfficeStore || updateOfficeStore.success === false) {
+                        return res.json({ success: false, message: updateOfficeStore.message })
+                    }
+                    return res.json({ success: true, message: `${materialName} added successfully!` })
                 }
-                return res.json({ success: true, message: `${materialName} added successfully!` })
+
             }
         } catch (err) {
-            console.warn("ERROR in createOrEditProject:", err.message)
+            console.warn("ERROR in addMaterials:", err.message)
             return res.json({ success: false, message: `Adding ${materialName} failed: err.message` })
         }
     },
+
+    updateOfficeStore: async function (materialName, usedCountEntered, operator) {
+        try {
+            const officeDoc = await officeDetails.findOne({ materialName: materialName }).lean();
+            if (!officeDoc) {
+                return { success: false, message: `${materialName} not found in office store!` };
+            }
+            const newBalance = operator === "+" ? officeDoc.balanceQuantity - usedCountEntered : Number(officeDoc.balanceQuantity) + Number(usedCountEntered);
+            const totalCost = officeDoc.perRate * newBalance;
+            const officeResponse = await officeDetails.findByIdAndUpdate(officeDoc._id, { balanceQuantity: newBalance, totalCost }, { new: true });
+            if (!officeResponse) {
+                return { success: false, message: `Updating ${materialName} in office store failed` };
+            }
+            return { success: true };
+        } catch (err) {
+            console.warn("ERROR in updateOfficeStore:", err.message)
+            return { success: false, message: `Error Updating ${materialName} in office store failed: ${err.message}` };
+        }
+    }
 };
 
 module.exports = mrController;

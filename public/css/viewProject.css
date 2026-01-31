@@ -14,7 +14,7 @@
     margin-right: 25px !important;
 }
 
-#addMaterialForm button#submitBtn, #addMaterialForm button#confirmDeleteBtn {
+#addMaterialForm button#submitBtn, #addMaterialForm button#confirmDeleteBtn, #addMaterialForm button#subtractBtn {
     width: 23% !important;
 
 }
@@ -26,4 +26,161 @@
 /* Data Table */
 table.table-bordered.dataTable {
   border-right-width: 1px !important;
+}
+
+/* Container and header */
+.table-main {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* DataTable base */
+table.dataTable {
+  width: 100% !important;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+/* Table header */
+table.dataTable thead {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+table.dataTable thead th {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  font-weight: 600;
+}
+
+/* Table rows */
+table.dataTable tbody td {
+  padding: 10px 16px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+  text-transform: capitalize;
+  font-family: math;
+  font-size: 17px;
+}
+
+table.dataTable tbody tr:hover {
+  background-color: #f5faff;
+}
+
+/* Action icons */
+.editMemoryBookRow a {
+  color: #0077b6;
+  font-size: 16px;
+  margin: 0 6px;
+  transition: color 0.2s ease;
+}
+
+.editMemoryBookRow a:hover {
+  color: #023e8a;
+}
+
+/* Search bar */
+.dataTables_filter {
+  float: right;
+  margin-bottom: 1rem;
+}
+
+.dataTables_filter input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Pagination */
+.dataTables_paginate {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.dataTables_paginate .paginate_button {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 0 2px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.dataTables_paginate .paginate_button.current {
+  background-color: #0077b6;
+  color: #fff !important;
+  border-color: #0077b6;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background-color: #e0f0ff;
+  color: #0077b6;
+}
+
+/* Dropdown for entries */
+.dataTables_length {
+  margin-bottom: 1rem;
+  font-size: 14px;
+}
+
+.dataTables_length select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+table.dataTable,
+table.dataTable th,
+table.dataTable td {
+  border: 1px solid #ccc;
+}
+
+table.dataTable {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+table.dataTable td.dataTables_empty {
+    color: red;
+}
+
+#materialListTable_info {
+    font-size: 13px !important;
+    margin-top: 10px !important;
+}
+
+#materialListTable_paginate {
+    margin-top: 10px !important;
+}
+
+i.fa-pen-to-square {
+    color: #5b6ce5;
+    margin-right: 10px;
+}
+
+i.fa-pen-to-square:hover {
+    color:blue;
+}
+
+i.fa-trash {
+    color: #e55b5b;
+}
+
+i.fa-trash:hover {
+    color:rgb(237, 10, 10);
+}
+
+table.dataTable td.text-center {
+    display: flex;
+    justify-content: center;
 }

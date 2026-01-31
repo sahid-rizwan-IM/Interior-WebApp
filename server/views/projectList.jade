@@ -9,6 +9,7 @@ block content
                 h4 Available Projects
                     a.logout(onclick="openLogoutModal()") Logout
                     a.addNewProject(href="/api/addNewProject") Add New
+                    a.officeStore(href="/api/officeStore") Office Store
                     //- .table-main.custom-pagination(style="margin-top: 3rem;")
                     //-     table.table.table-striped.table-bordered.dataTable(id="memoryprojectTable" cellpadding='0' cellspacing='0' border='0' width='100%' style="border-right-width: 1px !important;")
         .project-list 
@@ -100,17 +101,17 @@ block content
                 data: { projectId: projectId },
                 success: function(res) {
                     if (res.success === true) {
-                        $.notify(`${projectName} project deleted successfully!`, {type: "success"})
+                        $.notify(`${projectName} project deleted successfully!`, {type: "success", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
                         setTimeout(() => {
                             location.reload(); // refresh project list
                         }, 1000);
                     } else {
-                        $.notify(`${projectName} project deleted failed- ${res.message}!`, {type: "danger"})
+                        $.notify(`${projectName} project deleted failed- ${res.message}!`, {type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
                     }
                 },
                 error: function(err) {
                     console.error("Error deleting project:", err);
-                    $.notify(`ERROR occured - ${res.message}!`, {type: danger})
+                    $.notify(`ERROR occured - ${res.message}!`, {type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
                 }
             });
         }

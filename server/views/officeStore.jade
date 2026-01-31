@@ -7,20 +7,20 @@ block head
     link(rel="stylesheet", href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css")
 
 block content
-    input#viewedProject(type="hidden" name="viewedProject" value=JSON.stringify(currentProjectDetails))
-    input#materialList(type="hidden" name="materialList" value=JSON.stringify(materialList))
     input#typeName(type="hidden" name="typeName" value=JSON.stringify(renderType))
+    //- input#(type="hidden" name="viewedProject" value=JSON.stringify(currentProjectDetails))
+    input#materialList(type="hidden" name="materialList" value=JSON.stringify(officeStore))
     section
         .headerBox
             .row
                 -console.log("got all", currentProjectDetails)
-                h4 #{currentProjectDetails ? currentProjectDetails.projectName : ''} - Material Lists
-                    span.h3Details (Client Name: #{currentProjectDetails ? currentProjectDetails.clientName : ''} - Quoted Amount: #{currentProjectDetails ? currentProjectDetails.totalAmount : ''})
+                h4 Office Store Details
+                    //- span.h3Details (Client Name: #{currentProjectDetails ? currentProjectDetails.clientName : ''} - Quoted Amount: #{currentProjectDetails ? currentProjectDetails.totalAmount : ''})
                     a.logout(onclick="openLogoutModal()") Logout
-                    a.addNewProject(onclick="addItemsModal()") Add Items
+                    a.addNewProject(onclick=`addItemsModal("officeStore")`) Add Items
         .table-main.custom-pagination(style="margin: 3rem 7rem")
             table.table.table-striped.table-bordered.dataTable(id="materialListTable" cellpadding='0' cellspacing='0' border='0' width='100%' style="border-right-width: 1px !important;")
-        .project-list 
+        .project-list
         //- Custom modal
         div#logoutModal.modal-overlay(style="display:none !important")
         div#addItemsModal.modal-overlay(style="display:none !important")
@@ -39,9 +39,9 @@ block content
             
             var materialListColumns = [
                 { "sTitle": "Material Name", "mData": "materialName", "sWidth": "20%" },
-                { "sTitle": "Quantity", "mData": "totalQuantity", "sWidth": "20%", "bSortable": false, "bSearchable": false },
-                { "sTitle": "Used Count", "mData": "usedCount", "sWidth": "20%", "bSortable": false, "bSearchable": false },
-                { "sTitle": "Balance Count", "mData": "balanceCount", "sWidth": "20%", "bSortable": false, "bSearchable": false },
+                { "sTitle": "Balance Quantity", "mData": "balanceQuantity", "sWidth": "20%", "bSortable": false, "bSearchable": false },
+                { "sTitle": "Per/Rate", "mData": "perRate", "sWidth": "20%", "bSortable": false, "bSearchable": false },
+                { "sTitle": "Total Cost", "mData": "totalCost", "sWidth": "20%", "bSortable": false, "bSearchable": false },
                 {
                     "sTitle": "Action",
                     "sClass": "center text-center",
@@ -51,7 +51,8 @@ block content
                     "sWidth": "20%",
                     "mRender": function (data, type, row) {
                         var deleteUrl = `/api/deleteMaterial/${data}`;
-                        return `<a class="edit-material" data-id="${data}" data-name="${row.materialName}" data-quantity="${row.totalQuantity}" data-used="${row.usedCount}" title="Edit material">` +
+                        console.log("rowww==", row)
+                        return `<a class="edit-officeMaterial" data-id="${data}" data-name="${row.materialName}" data-perrate="${row.perRate}" data-quantity="${row.balanceQuantity}" title="Edit material">` +
                             `<i class="fa-solid fa-pen-to-square" aria-hidden="true"></i></a>` + 
                             `<a href="${deleteUrl}" title="Delete material">` +
                             `<i class="fa-solid fa-trash" aria-hidden="true"></i></a>`;

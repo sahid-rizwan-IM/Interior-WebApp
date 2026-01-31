@@ -50,9 +50,9 @@ $(document).ready(function () {
             data: JSON.stringify(postObj),
             success: function (res) {
                 if (res.success === false) {
-                    $.notify(res.message || "Creation or updation failed!", { type: "danger" });
+                    $.notify(res.message || "Creation or updation failed!", { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }});
                 } else {
-                    $.notify(res.message || "Project created successfully!", { type: "success" });
+                    $.notify(res.message || "Project created successfully!", { type: "success", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }});
                     $("#projectForm")[0].reset();
                     setTimeout(() => {
                         window.location.href = `/api/allMainProjects`;
@@ -60,7 +60,7 @@ $(document).ready(function () {
                 }
             },
             error: function (err) {
-                $.notify(err.responseJSON?.message || "An error occurred.", { type: "danger" });
+                $.notify(err.responseJSON?.message || "An error occurred.", { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }});
             }
         });
     });

@@ -31,7 +31,7 @@ $("#loginForm").submit(function (e) {
         },
         error: function (err) {
             console.log("Error:", err);
-            $.notify(err.responseJSON.message || "An unexpected error occurred.", { type: "danger" });
+            $.notify(err.responseJSON.message || "An unexpected error occurred.", { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }});
         }
     });
 })
