@@ -5,7 +5,7 @@ block head
 
 block content
     input#currentProject(type="hidden" name="currentProject" value= currentProject ? JSON.stringify(currentProject) : "{}")
-    .form-container
+    .form-container#newProject
         h2 #{currentProject && currentProject._id ? "Edit Project" : "New Project Form"}
         form#projectForm
             .form-group

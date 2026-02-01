@@ -16,8 +16,10 @@ block content
                 -console.log("got all", currentProjectDetails)
                 h4 Office Store Details
                     //- span.h3Details (Client Name: #{currentProjectDetails ? currentProjectDetails.clientName : ''} - Quoted Amount: #{currentProjectDetails ? currentProjectDetails.totalAmount : ''})
-                    a.logout(onclick="openLogoutModal()") Logout
-                    a.addNewProject(onclick=`addItemsModal("officeStore")`) Add Items
+                    a.logout(onclick="openLogoutModal()" title="Logout") Logout
+                    a.addNewProject(onclick=`addItemsModal("officeStore")` title="Add new material") Add Items
+                    a.goBackBtn(href="javascript:window.history.back()" title="Go back") 
+                        i.fa-solid.fa-arrow-right-from-bracket.mirror-icon
         .table-main.custom-pagination(style="margin: 3rem 7rem")
             table.table.table-striped.table-bordered.dataTable(id="materialListTable" cellpadding='0' cellspacing='0' border='0' width='100%' style="border-right-width: 1px !important;")
         .project-list
@@ -51,10 +53,9 @@ block content
                     "sWidth": "20%",
                     "mRender": function (data, type, row) {
                         var deleteUrl = `/api/deleteMaterial/${data}`;
-                        console.log("rowww==", row)
                         return `<a class="edit-officeMaterial" data-id="${data}" data-name="${row.materialName}" data-perrate="${row.perRate}" data-quantity="${row.balanceQuantity}" title="Edit material">` +
                             `<i class="fa-solid fa-pen-to-square" aria-hidden="true"></i></a>` + 
-                            `<a href="${deleteUrl}" title="Delete material">` +
+                            `<a class="delete-material" data-id="${data}" data-name="${row.materialName}" data-type="officeStore" title="Delete material">` +
                             `<i class="fa-solid fa-trash" aria-hidden="true"></i></a>`;
                     }
                 }

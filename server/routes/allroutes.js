@@ -8,7 +8,7 @@ module.exports = function (app) {
     app.get('/api/allMainProjects', mrController.ensureAuthenticated, mrController.renderProjectList);
     app.get('/api/addNewProject', mrController.ensureAuthenticated, mrController.addNewProject);
     app.post('/api/createOrEditProjectList', mrController.ensureAuthenticated, mrController.createOrEditProject);
-    app.delete('/api/deleteProject', mrController.ensureAuthenticated, mrController.deleteProject)
+    app.post('/api/deleteProject', mrController.ensureAuthenticated, mrController.deleteProject);
 
     app.get('/api/logoutUser', mrController.ensureAuthenticated, mrController.logoutUser);
 
@@ -17,5 +17,7 @@ module.exports = function (app) {
     app.get('/api/addMaterial', mrController.ensureAuthenticated, mrController.addMaterials);
 
     app.get('/api/officeStore', mrController.ensureAuthenticated, mrController.renderOfficeStore);
+
+    app.post('/api/deleteMaterial', mrController.ensureAuthenticated, mrController.deleteMaterialDoc);
 
 };

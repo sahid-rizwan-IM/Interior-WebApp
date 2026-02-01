@@ -7,6 +7,20 @@
   margin: 3rem 5rem;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../images/cardbg.jpg");
+  background-size: 100%;
+  filter: blur(7px);
+  z-index: -1;
+  /* keep it behind content */
+}
+
 .headerBox .row {
   display: flex;
   justify-content: space-between;
@@ -34,10 +48,11 @@
 .headerBox a:hover {
   background: #5e809f;
   transform: scale(1.1);
+  cursor: pointer;
 }
 
 .addNewProject,
-.logout {
+.logout, .goBackBtn {
   position: absolute;
   right: 6%;
   margin-top: -5px;
@@ -47,8 +62,26 @@
   right: 11.5%;
 }
 
-.logout:hover {
-  cursor: pointer
+.goBackBtn {
+  right: 18%;
+}
+
+.mirror-icon { 
+  transform: scaleX(-1);
+}
+
+.modal-overlay::before {
+  content: "";
+  position: fixed;
+  /* covers entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../images/cardbg.jpg");
+  background-size: 100%;
+  filter: blur(7px);
+  z-index: -1;
 }
 
 .modal-overlay {
@@ -64,22 +97,27 @@
   align-items: center;
   z-index: 9999;
   backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(4px);
 }
 
 .modal-box {
-  background: #fff;
+  /* background: #fff; */
+  background: rgb(12 12 12 / 75%);
   padding: 24px;
   padding-bottom: 40px !important;
   border-radius: 10px;
   width: 30rem;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); */
   animation: popIn 0.3s ease;
+  box-shadow: 6px 6px 10px, 6px 6px 10px !important;
 }
 
 .modal-box {
   font-size: 24px !important;
+}
+
+#logoutModal h3 {
+  color: #fff !important;
 }
 
 @keyframes popIn {
@@ -110,26 +148,67 @@
 }
 
 .btn-cancel {
-  background: #ccc;
-  color: #333;
+  background: #ccc !important;
+  color: #333 !important;
   font-size: large;
 }
 
 .btn-cancel:hover {
-  background: #bbb;
+  background: #bbb !important;
 }
 
 .btn-confirm {
-  background: #0077b6;
-  color: #fff;
+  background: #0077b6 !important;
+  color: #fff !important;
   font-size: large;
 }
 
 .btn-confirm:hover {
-  background: #005f8a;
+  background: #005f8a !important;
+}
+
+/* Prevent overall page scroll */
+body,
+html {
+  height: 100%;
+  overflow: hidden;
 }
 
 .project-list {
+  max-height: 560px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+.project-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.project-list::-webkit-scrollbar-track {
+  background: #f1f3f5;
+  border-radius: 10px;
+}
+
+.project-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #845ef7, #4dabf7);
+  border-radius: 10px;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.project-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #5c7cfa, #228be6);
+}
+
+.project-list {
+  scrollbar-width: thin;
+  scrollbar-color: #845ef7 #f1f3f5;
+}
+
+.project-list {
+  cursor: all-scroll;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 5rem;
@@ -137,25 +216,30 @@
 }
 
 .project-card {
-  background: rgba(255, 255, 255, 0.85);
+  /* background: rgba(255, 255, 255, 0.85); */
+  background: rgb(12 12 12 / 75%);
   backdrop-filter: blur(6px);
   border-radius: 14px;
   overflow: hidden;
   /* box-shadow: 0 6px 18px rgba(0,0,0,0.12); */
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, backgorund 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
 }
 
 .project-card:hover {
   transform: translateY(-8px);
+  cursor: default;
+  /* background: linear-gradient(135deg, #5f5a5a, #a9637b, #706c7c); */
   /* box-shadow: 0 10px 24px rgba(0,0,0,0.18); */
-  box-shadow: 0 0 8px #1080bb, 0 0 16px #f6c968, 0 0 24px #f6c968, 0 0 32px #198cca;
+  /* box-shadow: 0 0 8px #1080bb, 0 0 16px #f6c968, 0 0 24px #f6c968, 0 0 32px #198cca; */
+  box-shadow: 0 2px 8px #080808, 0 4px 16px #ffffff, 0 6px 24px #000000, 0 8px 32px #4a4343;
 
 }
 
 .project-title {
-  background: linear-gradient(135deg, #00367c, #005fa3);
+  /* background: linear-gradient(135deg, #00367c, #005fa3); */
+  background: linear-gradient(135deg, #1058f9, #2fe2ff);
   color: #fff;
   padding: 14px 18px;
   font-size: 1.1rem;
@@ -167,7 +251,8 @@
 .project-desc {
   padding: 14px 0 0 18px;
   font-size: 0.95rem;
-  color: #333;
+  color: #fff;
+  /* color: #333; */
   flex-grow: 1;
   line-height: 1.5;
   margin: 0 !important;
@@ -176,6 +261,7 @@
 .project-actions {
   display: flex;
   justify-content: flex-end;
+  color: #fff;
   gap: 12px;
   padding: 14px 18px;
   border-top: 1px solid #eee;
@@ -225,6 +311,7 @@
 
 .totalAmount {
   margin: auto !important;
+  font-size: 15px !important;
 }
 
 a.officeStore {

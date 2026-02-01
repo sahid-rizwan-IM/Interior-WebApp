@@ -7,6 +7,11 @@ const fs = require("fs");
 const path = require("path");
 const moment = require("moment");
 
+function capitalizeFirstLetter(str) { 
+    if (!str) return str; 
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase(); 
+}
+
 const mrController = {
     ensureAuthenticated: async function (req, res, next) {
         if (req.session && req.session.user) {
@@ -89,7 +94,7 @@ const mrController = {
                 const updateDoc = {
                     clientName,
                     projectNo,
-                    projectName,
+                    projectName: capitalizeFirstLetter(projectName),
                     description,
                     totalAmount,
                     startDate,
@@ -106,7 +111,7 @@ const mrController = {
                     isActive: true,
                     clientName,
                     projectNo,
-                    projectName,
+                    projectName: capitalizeFirstLetter(projectName),
                     description,
                     totalAmount,
                     startDate,
@@ -198,7 +203,7 @@ const mrController = {
 
                 if (materialId) {
                     const updateDoc = {
-                        materialName,
+                        materialName: capitalizeFirstLetter(materialName),
                         balanceQuantity,
                         perRate,
                         totalCost,
@@ -212,7 +217,7 @@ const mrController = {
                 } else {
                     const newDoc = {
                         isActive: true,
-                        materialName,
+                        materialName: capitalizeFirstLetter(materialName),
                         balanceQuantity,
                         perRate,
                         totalCost,
@@ -245,26 +250,27 @@ const mrController = {
 
                 if (materialId) {
                     const updateDoc = {
-                        materialName,
+                        materialName: capitalizeFirstLetter(materialName),
                         totalQuantity,
                         usedCount,
                         balanceCount,
                         lastModifiedAt: new Date()
                     }
-                    const response = await materialslist.findByIdAndUpdate(materialId, updateDoc, { new: true });
-                    if (!response) {
-                        return res.json({ success: false, message: `Updating ${materialName} failed!` })
-                    }
                     const updateOfficeStore = await mrController.updateOfficeStore(materialName, usedCountEntered, operator);
                     if (!updateOfficeStore || updateOfficeStore.success === false) {
                         return res.json({ success: false, message: updateOfficeStore.message })
                     }
+                    const response = await materialslist.findByIdAndUpdate(materialId, updateDoc, { new: true });
+                    if (!response) {
+                        return res.json({ success: false, message: `Updating ${materialName} failed!` })
+                    }
+                    
                     return res.json({ success: true, message: `${materialName} Updated successfully!` })
                 } else {
                     const newDoc = {
                         isActive: true,
                         projectId,
-                        materialName,
+                        materialName: capitalizeFirstLetter(materialName),
                         totalQuantity,
                         usedCount,
                         balanceCount,
@@ -276,14 +282,15 @@ const mrController = {
                     if (materialAvail) {
                         return res.json({ success: false, message: `${materialName} already present, please update there!` })
                     }
-                    const response = await materialslist.create(newDoc);
-                    if (!response) {
-                        return res.json({ success: false, message: `Adding ${materialName} failed!` })
-                    }
                     const updateOfficeStore = await mrController.updateOfficeStore(materialName, usedCountEntered, operator);
                     if (!updateOfficeStore || updateOfficeStore.success === false) {
                         return res.json({ success: false, message: updateOfficeStore.message })
                     }
+                    const response = await materialslist.create(newDoc);
+                    if (!response) {
+                        return res.json({ success: false, message: `Adding ${materialName} failed!` })
+                    }
+                    
                     return res.json({ success: true, message: `${materialName} added successfully!` })
                 }
 
@@ -311,7 +318,33 @@ const mrController = {
             console.warn("ERROR in updateOfficeStore:", err.message)
             return { success: false, message: `Error Updating ${materialName} in office store failed: ${err.message}` };
         }
+    },
+
+    deleteMaterialDoc: async function (req, res) {
+        try {
+            const { materialId, collectionType } = req.body;
+
+            if (!materialId || !collectionType) {
+                return res.json({ success: false, message: "No material Id or collection Type." });
+            }
+
+            let deleteMaterial;
+            if (collectionType === "officeStore") {
+                deleteMaterial = await officeDetails.findByIdAndDelete(materialId);
+            } else {
+                deleteMaterial = await materialslist.findByIdAndDelete(materialId);
+            }
+
+            if (!deleteMaterial) {
+                return res.json({ success: false, message: "Material not found in DB." });
+            }
+            return res.json({ success: true, message: "Material deleted successfully!" });
+
+        } catch (err) {
+            console.warn("ERROR in deleteMaterial:", err)
+            return  res.json({ success: false, message: err.message });
+        }
     }
-};
+ };
 
 module.exports = mrController;

@@ -34,18 +34,28 @@ $(document).ready(function () {
         addItemsModal("officeStore", id, name, perRate, quantity);
     });
 
+    $(document).on('click', '.delete-material', function () {
+        const id = $(this).data('id');
+        const collectionType = $(this).data('type');
+        const materialName = $(this).data('name');
+        document.getElementById('logoutModal').style.display = 'flex';
+        console.log("got in delete===", id, "and", materialName, "and", collectionType)
+
+        alertPopUp("delete", id, materialName, collectionType);
+    });
+
 });
 
-function alertPopUp(type, projectId = null, projectName = null) {
+function alertPopUp(type, projectId = null, projectName = null, collectionType = null) {
     $("#logoutModal").empty()
     let html = `<div class="modal-box">
-                <h3>Are you sure you want to ${type}?</h3>
+                <h3>${ projectName !== null ? `Are you sure you want to ${type} ${projectName}?` : `Are you sure you want to ${type}?`}</h3>
                 <div class="modal-actions">
-                    <button class="btn-cancel" onclick="closeLogoutModal()">Dismiss</button>`
+                    <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>`
     if (type === "logout") {
         html += `<button class="btn-confirm" onclick="confirmLogout()">Yes, ${type}</button>`
     } else if (type === "delete") {
-        html += `<button class="btn-confirm" id="confirmDeleteBtn">Yes, ${type}</button>`
+        html += `<button class="btn-confirm" id="confirmDeleteButton">Yes, ${type}</button>`
     }
 
     html += `   
@@ -54,8 +64,9 @@ function alertPopUp(type, projectId = null, projectName = null) {
             `
     $("#logoutModal").append(html)
     if (type === "delete") {
-        $("#confirmDeleteBtn").on("click", function () {
-            confirmDelete(projectId, projectName);
+        console.log("got in type delete===")
+        $("#confirmDeleteButton").on("click", function () {
+            confirmDelete(projectId, projectName, collectionType);
         });
     }
 };
@@ -74,32 +85,54 @@ function confirmLogout() {
     window.location.href = "/api/logoutUser";
 }
 
-function confirmDelete(projectId, projectName) {
-    $.ajax({
-        url: '/api/deleteProject',
-        type: 'DELETE',
-        data: { projectId: projectId },
-        success: function (res) {
-            if (res.success === true) {
-                $.notify(`${projectName} project deleted successfully!`, { type: "success", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
-                setTimeout(() => {
-                    location.reload(); // refresh project list
-                }, 1000);
-            } else {
-                $.notify(`${projectName} project deleted failed- ${res.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
+function confirmDelete(id, name, collectionType = null) {
+    if (collectionType === "officeStore" || collectionType === "eachProject") {
+        $.ajax({
+            url: '/api/deleteMaterial',
+            type: 'POST',
+            data: { materialId: id, collectionType: collectionType },
+            success: function (res) {
+                if (res.success === true) {
+                    $.notify(`${name} deleted successfully!`, { type: "success", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } })
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    $.notify(`${name} deletion failed: ${res.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } })
+                }
+            },
+            error: function (err) {
+                console.error("Error deleting material:", err);
+                $.notify(`Error deleting material: ${err.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } })
             }
-        },
-        error: function (err) {
-            console.error("Error deleting project:", err);
-            $.notify(`ERROR occured - ${err.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
-        }
-    });
+        });
+    } else {
+        $.ajax({
+            url: '/api/deleteProject',
+            type: 'POST',
+            data: { projectId: id },
+            success: function (res) {
+                if (res.success === true) {
+                    $.notify(`${name} project deleted successfully!`, { type: "success", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } })
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    $.notify(`${name} project deletion failed: ${res.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } })
+                }
+            },
+            error: function (err) {
+                console.error("Error deleting project:", err);
+                $.notify(`Error deleting project: ${err.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } })
+            }
+        });
+    }
 }
 
 function addItemsModal(type = null, materialId = null, name = null, perRate = null, quantity = null, used = null) {
     $("#addItemsModal").empty()
     $("#addItemsModal").css("display", "flex")
-    let html = `<div class="form-container" id="addMaterialForm">
+    let html = `<div class="form-container modal-box" id="addMaterialForm">
                     <h2>
                         <!-- Replace with JS logic: if currentProject._id exists show "Edit Project", else "New Project Form" -->
                         ${materialId ? "Edit Material" : "Add Material"}
@@ -170,57 +203,6 @@ function addItemsModal(type = null, materialId = null, name = null, perRate = nu
             return $.notify("Please enter material name", { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } });
         }
         addOrSubtractCounts("+", type, materialId, quantity, used);
-        // let postObj;
-        // const materialName = $('#materialName').val();
-        // if (type === "officeStore") {
-        //     const balanceQuantity = materialList && materialList._id ? materialList.balanceQuantity + $('#quantityHave').val() : $('#quantityHave').val();
-        //     const perRate = materialList && materialList._id && materialList.perRate ? materialList.perRate : $('#perRate').val();
-        //     const totalCost = perRate * balanceQuantity
-
-        //     postObj = {
-        //         collectionType: type,
-        //         materialName,
-        //         balanceQuantity,
-        //         perRate,
-        //         totalCost,
-        //         materialId
-        //     }
-        // } else {
-        //     const totalQuantity = materialList && materialList._id ? materialList.totalQuantity + $('#quantityHave').val() : $('#quantityHave').val();
-        //     const usedCount = materialList && materialList._id ? materialList.usedCount + $('#usedNow').val() : $('#usedNow').val();
-        //     const balanceCount = totalQuantity - usedCount
-
-        //     postObj = {
-        //         projectId: currentProjectDetails.projectId,
-        //         materialName,
-        //         totalQuantity,
-        //         usedCount,
-        //         balanceCount,
-        //         materialId
-        //     }
-        // }
-
-        // console.log("postObj===", postObj)
-
-        // $.ajax({
-        //     url: '/api/addMaterial',
-        //     type: 'POST',
-        //     data: postObj,
-        //     success: function (res) {
-        //         if (res.success === true) {
-        //             $.notify(res.message, { type: "success" })
-        //             setTimeout(() => {
-        //                 location.reload(); // refresh view page
-        //             }, 1000);
-        //         } else {
-        //             $.notify(`Adding ${materialName} material failed- ${res.message}!`, { type: "danger" })
-        //         }
-        //     },
-        //     error: function (err) {
-        //         console.error("Error adding material:", err);
-        //         $.notify(`ERROR occured - ${err.message}!`, { type: "danger" })
-        //     }
-        // });
     });
 }
 
@@ -265,17 +247,17 @@ function addOrSubtractCounts(operator, type, materialId, quantity = null, used =
         data: postObj,
         success: function (res) {
             if (res.success === true) {
-                $.notify(res.message, { type: "success", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
+                $.notify(res.message, { type: "success", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } })
                 setTimeout(() => {
-                    location.reload(); // refresh view page
+                    location.reload();
                 }, 1000);
             } else {
-                $.notify(`Adding ${materialName} material failed- ${res.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
+                $.notify(`Adding ${materialName} material failed- ${res.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } })
             }
         },
         error: function (err) {
             console.error("Error adding material:", err);
-            $.notify(`ERROR occured - ${err.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
+            $.notify(`Error adding material: ${err.message}!`, { type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' } })
         }
     });
 }

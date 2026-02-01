@@ -1,26 +1,43 @@
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../images/MR_Logo.jpg");
+  /* background-size: 100%; */
+  filter: blur(7px);
+  z-index: -1;
+  /* keep it behind content */
+}
+
 .h3Details {
-    position:absolute;
-    margin-left:0.5%;
-    font-size:17px;
-    color: rgb(237, 136, 168);
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-}
-.form-container{
-    width: 384px !important;
-    padding-right: 0rem !important;
+  position: absolute;
+  margin-left: 0.5%;
+  font-size: 17px;
+  color: rgb(237, 136, 168);
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.form-container h2{
-    margin-right: 25px !important;
+.form-container {
+  width: 384px !important;
+  padding-right: 0rem !important;
 }
 
-#addMaterialForm button#submitBtn, #addMaterialForm button#confirmDeleteBtn, #addMaterialForm button#subtractBtn {
-    width: 23% !important;
+.form-container h2 {
+  margin-right: 25px !important;
+}
+
+#addMaterialForm button#submitBtn,
+#addMaterialForm button#confirmDeleteBtn,
+#addMaterialForm button#subtractBtn {
+  width: 23% !important;
 
 }
 
-#addMaterialForm .butons{
-    margin-right: 10% !important;
+#addMaterialForm .butons {
+  margin-right: 10% !important;
 }
 
 /* Data Table */
@@ -33,7 +50,7 @@ table.table-bordered.dataTable {
   background: #f9f9f9;
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* DataTable base */
@@ -151,36 +168,36 @@ table.dataTable {
 }
 
 table.dataTable td.dataTables_empty {
-    color: red;
+  color: red;
 }
 
 #materialListTable_info {
-    font-size: 13px !important;
-    margin-top: 10px !important;
+  font-size: 13px !important;
+  margin-top: 10px !important;
 }
 
 #materialListTable_paginate {
-    margin-top: 10px !important;
+  margin-top: 10px !important;
 }
 
 i.fa-pen-to-square {
-    color: #5b6ce5;
-    margin-right: 10px;
+  color: #5b6ce5;
+  margin-right: 10px;
 }
 
 i.fa-pen-to-square:hover {
-    color:blue;
+  color: blue;
 }
 
 i.fa-trash {
-    color: #e55b5b;
+  color: #e55b5b;
 }
 
 i.fa-trash:hover {
-    color:rgb(237, 10, 10);
+  color: rgb(237, 10, 10);
 }
 
 table.dataTable td.text-center {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }

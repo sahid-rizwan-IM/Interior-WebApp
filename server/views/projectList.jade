@@ -7,9 +7,9 @@ block content
         .headerBox
             .row
                 h4 Available Projects
-                    a.logout(onclick="openLogoutModal()") Logout
-                    a.addNewProject(href="/api/addNewProject") Add New
-                    a.officeStore(href="/api/officeStore") Office Store
+                    a.logout(onclick="openLogoutModal()" title="Logout") Logout
+                    a.addNewProject(href="/api/addNewProject" title="Add new material") Add New
+                    a.officeStore(href="/api/officeStore" title="Open office store") Office Store
                     //- .table-main.custom-pagination(style="margin-top: 3rem;")
                     //-     table.table.table-striped.table-bordered.dataTable(id="memoryprojectTable" cellpadding='0' cellspacing='0' border='0' width='100%' style="border-right-width: 1px !important;")
         .project-list 
@@ -61,7 +61,7 @@ block content
             let html = `<div class="modal-box">
                 <h3>Are you sure you want to ${type}?</h3>
                 <div class="modal-actions">
-                    <button class="btn-cancel" onclick="closeLogoutModal()">Dismiss</button>`
+                    <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>`
             if (type === "logout") {
                 html+= `<button class="btn-confirm" onclick="confirmLogout()">Yes, ${type}</button>`
             } else if (type === "delete") {
@@ -97,13 +97,13 @@ block content
         function confirmDelete(projectId, projectName) {
             $.ajax({
                 url: '/api/deleteProject',
-                type: 'DELETE',
+                type: 'POST',
                 data: { projectId: projectId },
                 success: function(res) {
                     if (res.success === true) {
                         $.notify(`${projectName} project deleted successfully!`, {type: "success", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
                         setTimeout(() => {
-                            location.reload(); // refresh project list
+                            location.reload();
                         }, 1000);
                     } else {
                         $.notify(`${projectName} project deleted failed- ${res.message}!`, {type: "danger", animate: { enter: 'animated bounceInDown', exit: 'animated bounceOutUp' }})
